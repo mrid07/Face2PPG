@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Rate Results | VitalScan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7f5af0;
+            --primary-dark: #6a47d5;
+            --secondary: #2cb67d;
+            --light: #fffffe;
+            --dark: #16161a;
+            --secondary-dark: #239d69;
+            --gray: #94a1b2;
+            --gray-dark: #72757e;
+            --background: #242629;
+            --surface: #16161a;
+            --paragraph: #94a1b2;
+            --accent: #7f5af0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background-color: var(--surface);
+            border-radius: 18px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        
+        header {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--paragraph);
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 2.5rem;
+        }
+        
+        .result-card {
+            position: relative;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2));
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .heart-rate-value {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            letter-spacing: -0.03em;
+            color: var(--light);
+            line-height: 1;
+        }
+        
+        .bpm-label {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .result-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(127, 90, 240, 0.4);
+        }
+        
+        .heart-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
+            animation: pulse-icon 1.2s ease infinite;
+        }
+        
+        @keyframes pulse-icon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .graph-container {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+        
+        .graph-container h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .graph-img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+        
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 14px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(127, 90, 240, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(127, 90, 240, 0.5);
+        }
+        
+        .action-button:hover::before {
+            opacity: 1;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .result-description {
+            color: var(--paragraph);
+            margin: 1.5rem 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            max-width: 80%;
+            text-align: center;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-normal {
+            background-color: var(--secondary);
+            box-shadow: 0 0 8px rgba(44, 182, 125, 0.8);
+        }
+        
+        .status-high {
+            background-color: #ff7e57;
+            box-shadow: 0 0 8px rgba(255, 126, 87, 0.8);
+        }
+        
+        .status-low {
+            background-color: #5195ea;
+            box-shadow: 0 0 8px rgba(81, 149, 234, 0.8);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                border-radius: 12px;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .heart-rate-value {
+                font-size: 3.5rem;
+            }
+            
+            .result-description {
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Heart Rate Results</h1>
+            <div class="subtitle">Your Heart Rate analysis is complete</div>
+        </header>
+        
+        <div class="content">
+            <div class="result-card">
+                <div class="result-label">
+                    <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    Heart Rate
+                </div>
+                <div class="heart-rate-value">{{ heart_rate }}</div>
+                <div class="bpm-label">Beats Per Minute</div>
+                
+                <div class="result-description">
+                    {% if heart_rate > 100 %}
+                        <span class="status-indicator status-high"></span>Your heart rate is slightly elevated. This could be due to recent physical activity, stress, or caffeine intake.
+                    {% elif heart_rate < 60 %}
+                        <span class="status-indicator status-low"></span>Your heart rate is below average, which is common for people with good cardiovascular fitness at rest.
+                    {% else %}
+                        <span class="status-indicator status-normal"></span>Your heart rate is within the normal resting range for adults (60-100 BPM).
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <h3>PPG Signal Analysis</h3>
+                <img class="graph-img" src="{{ url_for('serve_plot', filename=plot_image) }}" alt="PPG Signal Graph">
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="/" class="action-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 17.5L3 6v14h18v-4.5"></path>
+                        <path d="M13 7l9 9"></path>
+                    </svg>
+                    Take New Reading
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; Mridul and Sarthak, Enhanced Elderly Care Monitoring Using Computer Vision and rPPG
+            <br>
+            <small>All rights reserved.</small>
+        </div>
+    </div>
+</body>
+</html>
